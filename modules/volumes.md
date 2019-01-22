@@ -204,7 +204,7 @@
 1. Delete wordpress persistent volume claim. 
 1. Manually create a persistent disk in GCE. (Compute engine -> Disks -> Create disk, use `source type = none` to create an empty disk) or use the following command
     ```
-    gcloud compute disks create --size=30GB --zone=us-west1-c my-data-disk
+    gcloud compute disks create --size=200GB --zone=us-west1-c my-data-disk
     ```
 1. Change wordpress deployment to use your persistent disk instead of persistent volume claim. Find `gcePersistentDisk` section in [this](https://kubernetes.io/docs/concepts/storage/volumes/) document for reference.
 

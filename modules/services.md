@@ -235,10 +235,9 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
 
 ### Exercise 4 (Optional): Blue green deployment
 
-1. Using repo https://github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/master/hello-app.
-1. Create a deployment called "blue"  with label "app=blue". Use gcr.io/google-samples/hello-app:1.0 for blue container.
+1. Create a deployment called "blue"  with label "app=blue".
 1. Create a service that uses the same selector "app=blue"  
-1. Create a second deployment with label "app=green". Use gcr.io/google-samples/hello-app:2.0 for second container. 
+1. Create a second deployment with label "app=green". The deployment should contain the same application. (in a real scenario this should be a different version of the app, but for your example, you can use exactly the same app)
 1. Change service selector to "app=green" and make sure that now the service switched to the second deployment.
 
 ### Cleanup
