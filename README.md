@@ -1,4 +1,4 @@
-Program for the San Francisco public training in Jan 2019
+Program for the San Francisco public training - Jan 2019
 ====================================================
 
 * **Day 1**
