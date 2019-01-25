@@ -53,7 +53,7 @@ We will be using cloud shell that has docker already installed.
 
 1. Use cloud shell web preview, it is at top right of cloud shell window, or you can use split window like we did above and run `curl http://localhost:8080`. You should now see nginx page.
 
-![](img/webpreview.png)
+    ![](img/webpreview.png)
 
 1. Stop docker process, `ctrl-c`.  
 
@@ -68,20 +68,20 @@ We will be using cloud shell that has docker already installed.
 
 1. Save the following file as `index.html` inside `/tmp/html` folder on your local machine.
     ```
-  chmod g+w /tmp/html; chgrp $(id -g) /tmp/html
+    chmod g+w /tmp/html; chgrp $(id -g) /tmp/html
 
-  cat > /tmp/html/index.html <<EOF
-  <!DOCTYPE html>
-  <html>
-  <body>
+    cat > /tmp/html/index.html <<EOF
+    <!DOCTYPE html>
+    <html>
+    <body>
 
-  <h1>My First Heading</h1>
+    <h1>My First Heading</h1>
 
-  <p>My first paragraph.</p>
+    <p>My first paragraph.</p>
 
-  </body>
-  </html>
-  EOF
+    </body>
+    </html>
+    EOF
     ```
 
 1. Use cloud shell web preview, it is at top right of cloud shell window, or you can use split window like we did above and run `curl http://localhost:8080`. You should now see nginx page.
@@ -170,7 +170,7 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
 
 1. Save the following file as `supervisord.conf` inside `/tmp/docker-exercise4`, this is the supervisord configuration file
     ```
-  cat > /tmp/docker-exercise4/supervisord.conf <<EOF 
+  cat > /tmp/docker-exercise4/supervisord.conf <<EOF
   [unix_http_server]
   file=/dev/shm/supervisor.sock   ; (the path to the socket file)
 
