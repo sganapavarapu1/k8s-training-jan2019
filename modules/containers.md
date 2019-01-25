@@ -69,7 +69,9 @@ We will be using cloud shell that has docker already installed.
 1. Save the following file as `index.html` inside `/tmp/html` folder on your local machine.
     ```
     chmod g+w /tmp/html; chgrp $(id -g) /tmp/html
+    ```
 
+    ```
     cat > /tmp/html/index.html <<EOF
     <!DOCTYPE html>
     <html>
@@ -94,119 +96,119 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
 
 1. Save the following file as `Dockerfile` inside `/tmp/docker-exercise4`
     ```
-  mkdir /tmp/docker-exercise4
+    mkdir /tmp/docker-exercise4
     ```
 
     ```
-  cat > /tmp/docker-exercise4/Dockerfile <<EOF  
-  #Download base image ubuntu 16.04
-  FROM ubuntu:16.04
+    cat > /tmp/docker-exercise4/Dockerfile <<EOF  
+    #Download base image ubuntu 16.04
+    FROM ubuntu:16.04
 
-  # Set the author
-  MAINTAINER Firstname Lastname <firstname.lastname@company.com>
+    # Set the author
+    MAINTAINER Firstname Lastname <firstname.lastname@company.com>
 
-  # Set a label
-  LABEL com.example.version="1.0.0"
+    # Set a label
+    LABEL com.example.version="1.0.0"
 
-  # Update Software repository
-  RUN apt-get update
+    # Update Software repository
+    RUN apt-get update
 
-  # Install nginx, php-fpm and supervisord from ubuntu repository
-  RUN apt-get install -y nginx php7.0-fpm supervisor && \
-      rm -rf /var/lib/apt/lists/*
+    # Install nginx, php-fpm and supervisord from ubuntu repository
+    RUN apt-get install -y nginx php7.0-fpm supervisor && \
+        rm -rf /var/lib/apt/lists/*
 
-  # Define the ENV variable
-  ENV nginx_vhost /etc/nginx/sites-available/default
-  ENV php_conf /etc/php/7.0/fpm/php.ini
-  ENV nginx_conf /etc/nginx/nginx.conf
-  ENV supervisor_conf /etc/supervisor/supervisord.conf
+    # Define the ENV variable
+    ENV nginx_vhost /etc/nginx/sites-available/default
+    ENV php_conf /etc/php/7.0/fpm/php.ini
+    ENV nginx_conf /etc/nginx/nginx.conf
+    ENV supervisor_conf /etc/supervisor/supervisord.conf
 
-  # Enable php-fpm on nginx virtualhost configuration
-  COPY default ${nginx_vhost}
-  RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' ${php_conf} && \
-      echo "\ndaemon off;" >> ${nginx_conf}
+    # Enable php-fpm on nginx virtualhost configuration
+    COPY default ${nginx_vhost}
+    RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' ${php_conf} && \
+        echo "\ndaemon off;" >> ${nginx_conf}
 
-  # Copy supervisor configuration
-  COPY supervisord.conf ${supervisor_conf}
+    # Copy supervisor configuration
+    COPY supervisord.conf ${supervisor_conf}
 
-  RUN mkdir -p /run/php && \
-      chown -R www-data:www-data /var/www/html && \
-      chown -R www-data:www-data /run/php
+    RUN mkdir -p /run/php && \
+        chown -R www-data:www-data /var/www/html && \
+        chown -R www-data:www-data /run/php
 
-  # Volume configuration
-  VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
+    # Volume configuration
+    VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
 
-  # Configure Services and Port
-  COPY start.sh /start.sh
-  CMD ["./start.sh"]
+    # Configure Services and Port
+    COPY start.sh /start.sh
+    CMD ["./start.sh"]
 
-  EXPOSE 80 443
-  EOF
+    EXPOSE 80 443
+    EOF
     ```
 
 1. Save the following file as `default` inside `/tmp/docker-exercise4`, this is the nginx virtual host file
     ```
-  cat > /tmp/docker-exercise4/default <<EOF
-  server {
-      listen 80 default_server;
-      listen [::]:80 default_server;
+    cat > /tmp/docker-exercise4/default <<EOF
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
 
-      root /var/www/html;
-      index index.html index.htm index.nginx-debian.html;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
 
-      server_name _;
+        server_name _;
 
-      location / {
-          try_files $uri $uri/ =404;
-      }
+        location / {
+            try_files $uri $uri/ =404;
+        }
 
-      location ~ \.php$ {
-          include snippets/fastcgi-php.conf;
-          fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-      }
-  }
-  EOF
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        }
+    }
+    EOF
     ```
 
 1. Save the following file as `supervisord.conf` inside `/tmp/docker-exercise4`, this is the supervisord configuration file
     ```
-  cat > /tmp/docker-exercise4/supervisord.conf <<EOF
-  [unix_http_server]
-  file=/dev/shm/supervisor.sock   ; (the path to the socket file)
+    cat > /tmp/docker-exercise4/supervisord.conf <<EOF
+    [unix_http_server]
+    file=/dev/shm/supervisor.sock   ; (the path to the socket file)
 
-  [supervisord]
-  logfile=/var/log/supervisord.log ; (main log file;default $CWD/supervisord.log)
-  logfile_maxbytes=50MB        ; (max main logfile bytes b4 rotation;default 50MB)
-  logfile_backups=10           ; (num of main logfile rotation backups;default 10)
-  loglevel=info                ; (log level;default info; others: debug,warn,trace)
-  pidfile=/tmp/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
-  nodaemon=false               ; (start in foreground if true;default false)
-  minfds=1024                  ; (min. avail startup file descriptors;default 1024)
-  minprocs=200                 ; (min. avail process descriptors;default 200)
-  user=root             ;
+    [supervisord]
+    logfile=/var/log/supervisord.log ; (main log file;default $CWD/supervisord.log)
+    logfile_maxbytes=50MB        ; (max main logfile bytes b4 rotation;default 50MB)
+    logfile_backups=10           ; (num of main logfile rotation backups;default 10)
+    loglevel=info                ; (log level;default info; others: debug,warn,trace)
+    pidfile=/tmp/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+    nodaemon=false               ; (start in foreground if true;default false)
+    minfds=1024                  ; (min. avail startup file descriptors;default 1024)
+    minprocs=200                 ; (min. avail process descriptors;default 200)
+    user=root             ;
 
-  [rpcinterface:supervisor]
-  supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+    [rpcinterface:supervisor]
+    supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
-  [supervisorctl]
-  serverurl=unix:///dev/shm/supervisor.sock ; use a unix:// URL  for a unix socket
+    [supervisorctl]
+    serverurl=unix:///dev/shm/supervisor.sock ; use a unix:// URL  for a unix socket
 
-  [include]
-  files = /etc/supervisor/conf.d/*.conf
+    [include]
+    files = /etc/supervisor/conf.d/*.conf
 
 
-  [program:php-fpm7.0]
-  command=/usr/sbin/php-fpm7.0 -F
-  numprocs=1
-  autostart=true
-  autorestart=true
+    [program:php-fpm7.0]
+    command=/usr/sbin/php-fpm7.0 -F
+    numprocs=1
+    autostart=true
+    autorestart=true
 
-  [program:nginx]
-  command=/usr/sbin/nginx
-  numprocs=1
-  autostart=true
-  autorestart=true
-  EOF
+    [program:nginx]
+    command=/usr/sbin/nginx
+    numprocs=1
+    autostart=true
+    autorestart=true
+    EOF
     ```
 
 1. Save the following file as `start.sh` inside `/tmp/docker-exercise4`, this is the script that is run when the container is created from the image
