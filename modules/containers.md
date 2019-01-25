@@ -124,12 +124,12 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
     ENV supervisor_conf /etc/supervisor/supervisord.conf
 
     # Enable php-fpm on nginx virtualhost configuration
-    COPY default ${nginx_vhost}
-    RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' ${php_conf} && \
-        echo "\ndaemon off;" >> ${nginx_conf}
+    COPY default \${nginx_vhost}
+    RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' \${php_conf} && \
+        echo "\ndaemon off;" >> \${nginx_conf}
 
     # Copy supervisor configuration
-    COPY supervisord.conf ${supervisor_conf}
+    COPY supervisord.conf \${supervisor_conf}
 
     RUN mkdir -p /run/php && \
         chown -R www-data:www-data /var/www/html && \
@@ -234,7 +234,7 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
 1. Save the following file as `info.php` inside `/tmp/html` folder on your local machine.
     ```
     cat > /tmp/html/info.php <<EOF
-    echo '<?php phpinfo(); ?>' > /webroot/info.php
+    <?php phpinfo(); ?>
     EOF
     ```
 
@@ -243,7 +243,7 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
     docker run -it -p 3000:80 -v /tmp/html:/var/www/html --name test custom_nginx_image
     ```
 
-1. Use cloud shell web preview, and update port to 3000, or you can use split window like we did above and run `curl http://localhost:3000/info.php`. This should verify that nginx and php is working.
+1. Web preview will not work for this because of some redirects, so run `curl http://localhost:3000/info.php`. This should verify that nginx and php is working.
 
 When creating Dockerfiles there are [several best practices](https://docs.docker.com/v17.09/engine/userguide/eng-image/dockerfile_best-practices/) which should always be followed.
 
@@ -257,3 +257,7 @@ When creating Dockerfiles there are [several best practices](https://docs.docker
 1. Go inside running container (`docker exec -it <container-id> bash`) and find its IP (`ip addr show`)
 1. Inspect the docker container (`docker inspect <container-id>`) and find its IP
 1. Make sure you understand the difference between [host](https://docs.docker.com/network/host/) and default [bridge](https://docs.docker.com/network/bridge/) networks.
+
+---
+
+Next: [Containers](kops.md)
