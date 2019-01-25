@@ -213,8 +213,10 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
 
 1. Save the following file as `start.sh` inside `/tmp/docker-exercise4`, this is the script that is run when the container is created from the image
     ```
+    cat > /tmp/docker-exercise4/start.sh <<EOF
     #!/bin/sh
     /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+    EOF
     ```
 
 1. Make the startup script executable
@@ -231,19 +233,17 @@ In this exercise, we will create a Docker image with Nginx and PHP-FPM 7 using a
 
 1. Save the following file as `info.php` inside `/tmp/html` folder on your local machine.
     ```
+    cat > /tmp/html/info.php <<EOF
     echo '<?php phpinfo(); ?>' > /webroot/info.php
+    EOF
     ```
 
 1. Run the docker image
     ```
     docker run -it -p 3000:80 -v /tmp/html:/var/www/html --name test custom_nginx_image
     ```
-    Windows:
-    ```
-    docker run -it -p 3000:80 -v c:/tmp/html:/var/www/html --name test custom_nginx_image
-    ```
 
-1. Open `http://localhost:3000/info.php` in your web browser and make verify that nginx and php is working.
+1. Use cloud shell web preview, and update port to 3000, or you can use split window like we did above and run `curl http://localhost:3000/info.php`. This should verify that nginx and php is working.
 
 When creating Dockerfiles there are [several best practices](https://docs.docker.com/v17.09/engine/userguide/eng-image/dockerfile_best-practices/) which should always be followed.
 
