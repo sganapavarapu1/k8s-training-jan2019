@@ -9,6 +9,7 @@ A label is a key-value pair that is meaningful and relevant to users with certai
 1. Save the following as `label-pod.yaml`
 
     ```console
+    cat > label-pod.yaml <<EOF
     apiVersion: v1
     kind: Pod
     metadata:
@@ -21,6 +22,7 @@ A label is a key-value pair that is meaningful and relevant to users with certai
         image: mhausenblas/simpleservice:0.5.0
         ports:
         - containerPort: 9876
+    EOF
     ```
 
 1. Run the following command to create the pod
@@ -76,6 +78,7 @@ We can use labels for filtering a list.
 1. Save the following as `label-pod2.yaml`
 
     ```console
+    cat > label-pod2.yaml <<EOF
     apiVersion: v1
     kind: Pod
     metadata:
@@ -89,6 +92,7 @@ We can use labels for filtering a list.
         image: mhausenblas/simpleservice:0.5.0
         ports:
         - containerPort: 9876
+    EOF
     ```
 
 1. Create the above pod using
@@ -124,6 +128,7 @@ In this excercise you will add the phone number of responsible person to the run
 1. Edit `annotation-pod.yaml`
 
     ```console
+    cat > annotation-pod.yaml <<EOF
     apiVersion: v1
     kind: Pod
     metadata:
@@ -138,6 +143,7 @@ In this excercise you will add the phone number of responsible person to the run
         image: mhausenblas/simpleservice:0.5.0
         ports:
         - containerPort: 9876
+    EOF
     ```
 2. Try to create the pod
 
@@ -150,6 +156,7 @@ You will get an error as phone number does not satisfy formatting requirements f
 3. Change phone field to annotation
 
     ```console
+    cat > annotation-pod.yaml <<EOF
     apiVersion: v1
     kind: Pod
     metadata:
@@ -165,6 +172,7 @@ You will get an error as phone number does not satisfy formatting requirements f
         image: mhausenblas/simpleservice:0.5.0
         ports:
         - containerPort: 9876
+    EOF
     ```
 
 4. Create the pod
@@ -188,3 +196,7 @@ You will get an error as phone number does not satisfy formatting requirements f
 1. List the pods using selectors that will return all pods with versions not equal to 3
 
 Refer to the [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors) to review selector syntax.
+
+---
+
+Next: [Services](services.md)

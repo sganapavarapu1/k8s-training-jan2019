@@ -2,10 +2,11 @@
 
 A deployment is a supervisor for pods and replica sets, giving you fine-grained control over how and when a new pod version is rolled out as well as rolled back to a previous state.
 
-### Exercise 1: Create a deployment 
+### Exercise 1: Create a deployment
 
 1. Save the following file as `deployment.yaml`.
     ```console
+    cat > deployment.yaml <<EOF
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -28,6 +29,7 @@ A deployment is a supervisor for pods and replica sets, giving you fine-grained 
             env:
             - name: SIMPLE_SERVICE_VERSION
               value: "0.9"
+    EOF
     ```
 
 1. Create deployment.
@@ -41,12 +43,12 @@ A deployment is a supervisor for pods and replica sets, giving you fine-grained 
     kubectl get rs
     kubectl get pods
     ```
-    Copy pod IP address 
+    Copy pod IP address
 
 1. SSH to any kubernetes node and query app info.
     ```
     curl <pod-ip>:9876/info
-    ``` 
+    ```
     Make sure that simpleservice returns version `0.9`
 
 1. Update `deployment.yaml` and set `SIMPLE_SERVICE_VERSION` to `1.0`.
@@ -54,8 +56,8 @@ A deployment is a supervisor for pods and replica sets, giving you fine-grained 
 1. Apply changes.
     ```
     kubectl apply -f deployment.yaml
-    ``` 
-1. Run 
+    ```
+1. Run
     ```
     kubectl get pods
     ```
@@ -90,15 +92,19 @@ A deployment is a supervisor for pods and replica sets, giving you fine-grained 
     ```
     At this point in time we're back at where we started, with two new pods serving again version 0.9.
 
-### Exercise 2 (Optional): Observe how kubernetes restarts containers 
+### Exercise 2 (Optional): Observe how kubernetes restarts containers
 
 1. Use the simpleservice deployment
 1. Exec into the container, find and kill web server process
 1. Observe whether kubernetes tries to redeploy container
 
-### Clean-up 
+### Clean-up
 
 1. Delete the deployment.
     ```
     kubectl delete deployment simpleservice
     ```
+
+---
+
+Next: [Labels and Selectors](labels.md)

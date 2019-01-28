@@ -49,7 +49,7 @@ We wanted to show our students another way to deploying kubernetes and next two 
    gcloud compute ssh k8s-master-01
 
    echo "source <(kubectl completion bash)" >> ~/.bashrc
-   source ~/.bashrc      
+   bash -l      
    ```
 
 1. Create kubeadm config that allows PodSecurityPolicy and has some other customizations
@@ -146,6 +146,6 @@ We wanted to show our students another way to deploying kubernetes and next two 
 
    Typically at this point the master and nodes would turn from `NotReady` to `Ready` state. Why do you think systems are not flipping to good state? Well we will be taking a look at this very question next.
 
-   ---
+---
 
-   Next: [Security](security.md)
+Next: [Pod and Network Security](security.md)

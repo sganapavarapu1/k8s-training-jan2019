@@ -260,4 +260,4 @@ When creating Dockerfiles there are [several best practices](https://docs.docker
 
 ---
 
-Next: [Containers](kops.md)
+Next: [Kubernetes Operations (kops)](kops.md)

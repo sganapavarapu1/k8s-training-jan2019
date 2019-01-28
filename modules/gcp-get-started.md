@@ -107,6 +107,13 @@ gcloud config set compute/zone $COMPUTE_ZONE
 ' >> ~/.bashrc
 ```
 
+Lets also add completion for kubectl that we will want later:
+
+```
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+bash -l    
+```
+
 Every time you open a new terminal you will need to input these commands. To avoid this, we place the above commands inside `~/.bashrc` file and they will be executed automatically each time you log in.
 
 > Note: Changing the zone will not change the region automatically.
