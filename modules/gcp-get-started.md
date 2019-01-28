@@ -97,16 +97,17 @@ This will start a virtual machine in the cloud and give you access to a terminal
 When the shell is open, set your default compute zone and region:
 
 ```shell
+echo '
+## GCP K8S Deep Dive
 export PROJECT_ID=$(gcloud config get-value project)
-
 export COMPUTE_REGION=us-west1
 gcloud config set compute/region $COMPUTE_REGION
-
 export COMPUTE_ZONE=us-west1-c
 gcloud config set compute/zone $COMPUTE_ZONE
+' >> ~/.bashrc
 ```
 
-Every time you open a new terminal you will need to input these commands. To avoid this, place the above commands inside `~/.profile` file and they will be executed automatically each time you log in.
+Every time you open a new terminal you will need to input these commands. To avoid this, we place the above commands inside `~/.bashrc` file and they will be executed automatically each time you log in.
 
 > Note: Changing the zone will not change the region automatically.
 

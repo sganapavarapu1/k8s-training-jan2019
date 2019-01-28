@@ -51,12 +51,12 @@
     BUCKET="kubernetes-<unique value>"
     ```
 
-    ```
+    ```console
     gsutil mb gs://${BUCKET}
     ```
     Here we are creating a GCP bucket to store the cluster configuration for kops
 
-1. Create the cluster configuration
+1. Create the cluster configuration with calico.
 
    Run the following commands.
 
@@ -82,6 +82,7 @@
    ```console
    export KOPS_STATE_STORE=gs://${BUCKET}
 
+   echo "export BUCKET=${BUCKET}" >> ~/.bashrc
    echo 'export KOPS_STATE_STORE=gs://${BUCKET}' >> ~/.bashrc
    echo 'export KOPS_FEATURE_FLAGS=AlphaAllowGCE' >> ~/.bashrc
    ```
@@ -100,13 +101,24 @@
    kops update cluster simple.k8s.local --yes
    ```
 
+   Validate
+   ```console
+   kops validate cluster
+   ```
+
+
    After a few minutes the cluster will be ready and can be viewed from kubectl
 
    ```console
    kubectl cluster-info
 
-   kubectl get nodes
+   kubectl get nodes --show-labels
    ```
+
+   ```console
+   gcloud compute ssh $(gcloud compute instances list|awk '/master/ {print $1}')  
+   ```
+
 
 ### Exercise 2 (Optional): Identify resources that have been created
 

@@ -1,0 +1,84 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    # Assumes apparmor available
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+  name: ingress-nginx
+spec:
+  # See nginx-ingress-controller deployment at https://github.com/kubernetes/ingress-nginx/blob/master/deploy/mandatory.yaml
+  # See also https://github.com/kubernetes-incubator/kubespray/blob/master/roles/kubernetes-apps/ingress_controller/ingress_nginx/templates/psp-ingress-nginx.yml.j2
+  allowedCapabilities:
+  - NET_BIND_SERVICE
+  allowPrivilegeEscalation: true
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+    - min: 1
+      max: 65535
+  hostIPC: false
+  hostNetwork: false
+  hostPID: false
+  hostPorts:
+  - min: 80
+    max: 65535
+  privileged: false
+  readOnlyRootFilesystem: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+    ranges:
+    - min: 33
+      max: 65535
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+    # Forbid adding the root group.
+    - min: 1
+      max: 65535
+  volumes:
+  - 'configMap'
+  - 'downwardAPI'
+  - 'emptyDir'
+  - 'projected'
+  - 'secret'
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ingress-nginx-psp
+  namespace: ingress-nginx
+rules:
+- apiGroups:
+  - policy
+  resourceNames:
+  - ingress-nginx
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ingress-nginx-psp
+  namespace: ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ingress-nginx-psp
+subjects:
+# Lets cover default and nginx-ingress-serviceaccount service accounts
+# Could have altered default-http-backend deployment to use the same service acccount to avoid granting the default service account access
+- kind: ServiceAccount
+  name: default
+- kind: ServiceAccount
+  name: nginx-ingress-serviceaccount

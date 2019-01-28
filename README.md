@@ -29,4 +29,5 @@ Program for the San Francisco public training - Jan 2019
     1. [Logging](modules/logging.md)
     1. [Monitoring](modules/monitoring.md)
     1. [Federated Clusters](modules/federation.md)
-    1. [Security](modules/security.md)
+    1. [Kubeadm](modules/kubeadm.md)
+    1. [Pod and Network Security](modules/security.mb)
