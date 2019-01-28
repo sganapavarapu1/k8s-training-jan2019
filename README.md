@@ -1,7 +1,8 @@
-Program for the San Francisco public training in Jan 2019
+Program for the San Francisco public training - Jan 2019
 ====================================================
 
 * **Day 1**
+    1. [GCP Cloud Setup](modules/gcp-get-started.md)
     1. [Creating and running containers](modules/containers.md)
     1. [Installing a Kubernetes Cluster on Google Cloud Platform (GCP) with Kubernetes Operations (kops)](modules/kops.md)
     1. [Pods](modules/pods.md)
@@ -28,4 +29,5 @@ Program for the San Francisco public training in Jan 2019
     1. [Logging](modules/logging.md)
     1. [Monitoring](modules/monitoring.md)
     1. [Federated Clusters](modules/federation.md)
-    1. [Security](modules/security.md)
+    1. [Kubeadm](modules/kubeadm.md)
+    1. [Pod and Network Security](modules/security.mb)

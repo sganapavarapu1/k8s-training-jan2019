@@ -1,16 +1,17 @@
-## Ingress 
+## Ingress
 
 An API object that manages external access to the services in a cluster, typically HTTP.
 
 Ingress can provide load balancing, SSL termination and name-based virtual hosting.
 
-### Exercise 1: Deploy sample app using ingress 
+### Exercise 1: Deploy sample app using ingress
 
 1. Deploy nginx ingress controller
     ```
     kubectl create -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/ingress-nginx/v1.6.0-gce.yaml
     ```
-    This command deploys the controller in a separate namespace. The controller is just a set of different kubernetes objects: pods, services, etc. The controller is responsible for hosting nginx inside a pod and reconfiguring it whenever new ingress is deployed. Don't forget to open controller definition and see what is inside.
+    This command deploys the controller in a separate namespace. The controller is just a set of different kubernetes objects: pods, services, etc. The controller is responsible for hosting nginx inside a pod and reconfiguring it whenever new ingress is deployed.
+
 
 1. Use the following commands to ensure that the controller is deployed corectly
     ```
@@ -22,12 +23,18 @@ Ingress can provide load balancing, SSL termination and name-based virtual hosti
     NAME                    TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
     ingress-nginx           LoadBalancer   100.67.123.97    35.230.76.62  80:30406/TCP,443:30251/TCP   2m
     nginx-default-backend   ClusterIP      100.64.220.104   <none>        80/TCP                       2m
-    
+
     NAME                                     READY     STATUS    RESTARTS   AGE
     ingress-nginx-785fb9fcc5-vdxq9           1/1       Running   3          2m
     nginx-default-backend-6f675f4c45-rfl8n   1/1       Running   0          2m
     ```
     Note: It may take a a pod STATUS of `CrashLoopBackOff`. This is the backoff retry logic until the external load balancer is provisioned. Pay attention to the RESTARTS count.
+
+1. View the controller definition and see what has been deployed.
+    ```
+    kubectl --namespace kube-ingress get deployment ingress-nginx -oyaml
+    kubectl --namespace kube-ingress get deployment nginx-default-backend -oyaml
+    ```
 
 1. Create empty `ingress-sample-apps.yaml` file
 
@@ -66,14 +73,14 @@ Ingress can provide load balancing, SSL termination and name-based virtual hosti
       replicas: 3
       selector:
         matchLabels:
-          app: app2 
+          app: app2
       template:
         metadata:
           labels:
-            app: app2 
+            app: app2
         spec:
           containers:
-          - name: app2 
+          - name: app2
             image: nginxdemos/hello:plain-text
             ports:
             - containerPort: 80

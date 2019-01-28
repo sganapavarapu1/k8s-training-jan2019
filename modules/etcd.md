@@ -42,9 +42,13 @@ etcd, as most of the kubernetes system components, runs inside a static pod. Thi
     
 1. You can use `jq` or an online tool such as [jsonprettyprint](http://jsonprettyprint.com/) to make the manifest more readable.
     ```
+    etcdctl get /registry/pods/kube-system/<pod-name>
+    ```
+
+    # Piping over to jq
+    ```
     kubectl --namespace kube-system exec -it etcd-server-master-us-west1-c-ABCD -- etcdctl get /registry/pods/default/<mypod>|jq 
     ```
-** FYI did not pretty it up too much because of long strings. 
 
 ### Exercise 2: Backup etcd 
 
