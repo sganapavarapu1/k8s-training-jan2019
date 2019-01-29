@@ -1,4 +1,4 @@
-## Volumes and Data 
+## Volumes and Data
 
 ### Exercise 1: Deploying WordPress and MySQL with Persistent Volumes
 
@@ -19,7 +19,7 @@
     kubectl get secrets
     ```
 
-1. Create empty `mysql.yaml` file. 
+1. Create empty `mysql.yaml` file.
 
 1. Add Persistent Volume Claim definition to `mysql.yaml`
     ```
@@ -36,7 +36,7 @@
         requests:
           storage: 20Gi
     ```
- 
+
 1. Add mysql deployment definition to `mysql.yaml`
     ```
     ---
@@ -78,7 +78,7 @@
           - name: mysql-persistent-storage
             persistentVolumeClaim:
               claimName: mysql-pv-claim
-    ```` 
+    ````
     Pay attension to `volumes`, `volumeMounts` and `env` fields.
 
 1. Add service definition to `mysql.yaml`
@@ -199,16 +199,16 @@
 
 1. Copy the IP address, and load the page in your browser to view your site.
 
-### Exercise 2 (Optional): Static persistent volume provisioning 
+### Exercise 2 (Optional): Static persistent volume provisioning
 
-1. Delete wordpress persistent volume claim. 
+1. Delete wordpress persistent volume claim.
 1. Manually create a persistent disk in GCE. (Compute engine -> Disks -> Create disk, use `source type = none` to create an empty disk) or use the following command
     ```
     gcloud compute disks create --size=200GB --zone=us-west1-c my-data-disk
     ```
 1. Change wordpress deployment to use your persistent disk instead of persistent volume claim. Find `gcePersistentDisk` section in [this](https://kubernetes.io/docs/concepts/storage/volumes/) document for reference.
 
-### Exercise 3 (Optional): Observe how persistent volume is reattached 
+### Exercise 3 (Optional): Observe how persistent volume is reattached
 
 1. Open wordpress, enter some data.
 1. Exec inside mysql pod and kill mysql process.
@@ -221,15 +221,19 @@
     ```
     kubectl delete -f mysql.yaml
     ```
-    
+
 1. Delete all wordpress resources
     ```
     kubectl delete -f wordpress.yaml
     ```
-    
+
 1. Delete the manually created persistent disk (if created)
     ```
     gcloud compute disks delete --zone=us-west1-c my-data-disk
     ```
 
 Note: We could also cleanup using the wordpress label
+
+---
+
+Next: [Stateful Sets](stateful_sets.md)

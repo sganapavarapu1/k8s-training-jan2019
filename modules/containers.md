@@ -68,7 +68,7 @@ We will be using cloud shell that has docker already installed.
 
 1. Save the following file as `index.html` inside `/tmp/html` folder on your local machine.
     ```
-    chmod g+w /tmp/html; chgrp $(id -g) /tmp/html
+    sudo chmod g+w /tmp/html; sudo chgrp $(id -g) /tmp/html
     ```
 
     ```

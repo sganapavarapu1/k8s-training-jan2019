@@ -49,7 +49,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
     kubectl get pods
     ```
 
-1. Save the following file as `redis-master-service.yaml` 
+1. Save the following file as `redis-master-service.yaml`
     ```
     apiVersion: v1
     kind: Service
@@ -68,7 +68,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
         role: master
         tier: backend
     ```
-    Pay attention to `selector` and `ports` fields. Make sure you understand how service is connected to deployment. 
+    Pay attention to `selector` and `ports` fields. Make sure you understand how service is connected to deployment.
 
 1. Deploy the service.
     ```
@@ -136,11 +136,11 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
 1. Deploy the redis slave service.
     ```
     kubectl apply -f redis-slave-service.yaml
-    ``` 
+    ```
 
 1. Save the following file as `frontend-deployment.yaml`
     ```
-    apiVersion: apps/v1 
+    apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: frontend
@@ -170,7 +170,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
             - containerPort: 80
     ```
 
-1. Apply the frontend deployment. 
+1. Apply the frontend deployment.
     ```
     kubectl apply -f frontend-deployment.yaml
     ```
@@ -205,7 +205,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
     ```
     kubectl get service frontend
     ```
- 
+
 1. In GCE Cloud Console, find and investigate the external IP address that the `LoadBalancer` service type created
     * VPC Network -> External IP addresses
 
@@ -218,7 +218,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
 
 ### Exercise 2 (Optional): Investigate source code of the sample
 
-1. The source code of the previously deployed sample can be found [here](https://github.com/kubernetes/examples/tree/master/guestbook) 
+1. The source code of the previously deployed sample can be found [here](https://github.com/kubernetes/examples/tree/master/guestbook)
 1. The files we are interested in:
     * Redis slave Dockerfile: [link](https://github.com/kubernetes/examples/blob/master/guestbook/redis-slave/Dockerfile)
     * Redis slave startup script: [link](https://github.com/kubernetes/examples/blob/master/guestbook/redis-slave/run.sh)
@@ -227,9 +227,9 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
     * How a redis slave connects to the redis master? What address is it using?
     * How the php app connects to both the redis master and redis slaves?
 
-### Exercise 3 (Optional): Manually connect to redis from app pod 
+### Exercise 3 (Optional): Manually connect to redis from app pod
 
-1. Go inside any frontend pods. 
+1. Go inside any frontend pods.
 1. Use `redis-tools` package to install [redis-cli](https://redis.io/topics/rediscli)
 1. Use `redis-cli` to connect to redis master.
 
@@ -247,3 +247,7 @@ Keeping the mapping between the VIP and the pods up-to-date is the job of kube-p
     kubectl delete service frontend redis-slave redis-master
     kubectl delete deployment frontend redis-slave redis-master
     ```
+
+---
+
+Next: [Secrets and ConfigMaps](secrets_and_config_maps.md)

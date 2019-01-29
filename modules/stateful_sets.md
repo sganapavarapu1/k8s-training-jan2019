@@ -2,7 +2,7 @@
 
 StatefulSet is the workload API object used to manage stateful applications.
 
-Like a Deployment, a StatefulSet manages Pods that are based on an identical container spec. 
+Like a Deployment, a StatefulSet manages Pods that are based on an identical container spec.
 
 Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their Pods. These pods are created from the same spec, but are not interchangeable: each has a persistent identifier that it maintains across any rescheduling.
 
@@ -83,7 +83,7 @@ Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their
             lifecycle:
               preStop:
                 exec:
-                  command: 
+                  command:
                   - /bin/sh
                   - -c
                   - nodetool drain
@@ -126,7 +126,7 @@ Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their
     ```
     Pay attension to CASSANDRA_SEEDS environment variable - nodes use it to discover each other. Make sure you understand how this variable is related to casandra service. Also take a look at `readinessProbe` - it might delay container start.
 
-1. Deploy casandra statefull set 
+1. Deploy casandra statefull set
     ```
     kubectl create -f cassandra-statefulset.yaml
     ```
@@ -147,7 +147,7 @@ Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their
        cassandra-1   1/1       Running             0          3m
        cassandra-2   1/1       Running             0          2m
     ```
-    
+
 1. Run the Cassandra utility nodetool to display the status of the ring.
     ```
     kubectl exec cassandra-0 -- nodetool status
@@ -166,7 +166,7 @@ Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their
 
 ### Exercise 2 (Optional): Scale
 
-1. Scale cassandra cluster up and down. Observe in what order kubernetes deploys/deletes pods. 
+1. Scale cassandra cluster up and down. Observe in what order kubernetes deploys/deletes pods.
 
 ### Cleanup
 
@@ -175,3 +175,7 @@ Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their
     kubectl delete pods -l="app=cassandra"
     kubectl delete service cassandra
     ```
+
+---
+
+Next: [Ingress](ingress.md)
